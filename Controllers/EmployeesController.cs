@@ -6,91 +6,91 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MvcMovie.Data;
-using MvcMovie.Models;
+using Online_bookstore.Models;
 
 namespace Online_bookstore.Controllers
 {
-    public class MoviesController : Controller
+    public class EmployeesController : Controller
     {
-        private readonly MvcMovieContext _context;
+        private readonly EmployeeContext _context;
 
-        public MoviesController(MvcMovieContext context)
+        public EmployeesController(EmployeeContext context)
         {
             _context = context;
         }
 
-        // GET: Movies
+        // GET: Employees
         public async Task<IActionResult> Index()
         {
-              return _context.Movie != null ? 
-                          View(await _context.Movie.ToListAsync()) :
-                          Problem("Entity set 'MvcMovieContext.Movie'  is null.");
+              return _context.Employee != null ? 
+                          View(await _context.Employee.ToListAsync()) :
+                          Problem("Entity set 'EmployeeContext.Employee'  is null.");
         }
 
-        // GET: Movies/Details/5
+        // GET: Employees/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Movie == null)
+            if (id == null || _context.Employee == null)
             {
                 return NotFound();
             }
 
-            var movie = await _context.Movie
+            var employee = await _context.Employee
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (movie == null)
+            if (employee == null)
             {
                 return NotFound();
             }
 
-            return View(movie);
+            return View(employee);
         }
 
-        // GET: Movies/Create
+        // GET: Employees/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Movies/Create
+        // POST: Employees/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,ReleaseDate,Genre,Price")] Movie movie)
+        public async Task<IActionResult> Create([Bind("Id,Name,BirthDate,Job,Salary")] Employee employee)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(movie);
+                _context.Add(employee);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(movie);
+            return View(employee);
         }
 
-        // GET: Movies/Edit/5
+        // GET: Employees/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Movie == null)
+            if (id == null || _context.Employee == null)
             {
                 return NotFound();
             }
 
-            var movie = await _context.Movie.FindAsync(id);
-            if (movie == null)
+            var employee = await _context.Employee.FindAsync(id);
+            if (employee == null)
             {
                 return NotFound();
             }
-            return View(movie);
+            return View(employee);
         }
 
-        // POST: Movies/Edit/5
+        // POST: Employees/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ReleaseDate,Genre,Price")] Movie movie)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,BirthDate,Job,Salary")] Employee employee)
         {
-            if (id != movie.Id)
+            if (id != employee.Id)
             {
                 return NotFound();
             }
@@ -99,12 +99,12 @@ namespace Online_bookstore.Controllers
             {
                 try
                 {
-                    _context.Update(movie);
+                    _context.Update(employee);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MovieExists(movie.Id))
+                    if (!EmployeeExists(employee.Id))
                     {
                         return NotFound();
                     }
@@ -115,49 +115,49 @@ namespace Online_bookstore.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(movie);
+            return View(employee);
         }
 
-        // GET: Movies/Delete/5
+        // GET: Employees/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Movie == null)
+            if (id == null || _context.Employee == null)
             {
                 return NotFound();
             }
 
-            var movie = await _context.Movie
+            var employee = await _context.Employee
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (movie == null)
+            if (employee == null)
             {
                 return NotFound();
             }
 
-            return View(movie);
+            return View(employee);
         }
 
-        // POST: Movies/Delete/5
+        // POST: Employees/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Movie == null)
+            if (_context.Employee == null)
             {
-                return Problem("Entity set 'MvcMovieContext.Movie'  is null.");
+                return Problem("Entity set 'EmployeeContext.Employee'  is null.");
             }
-            var movie = await _context.Movie.FindAsync(id);
-            if (movie != null)
+            var employee = await _context.Employee.FindAsync(id);
+            if (employee != null)
             {
-                _context.Movie.Remove(movie);
+                _context.Employee.Remove(employee);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MovieExists(int id)
+        private bool EmployeeExists(int id)
         {
-          return (_context.Movie?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Employee?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
